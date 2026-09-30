@@ -7,7 +7,8 @@
   "scripts": {
     "build": "node tools/build.js",
     "start:firefox": "npm run build && web-ext run --source-dir dist/firefox",
-    "start:chrome": "npm run build && web-ext run --target chromium --source-dir dist/chrome"
+    "start:chrome": "npm run build && web-ext run --target chromium --source-dir dist/chrome",
+    "start:floorp": "npm run build && web-ext run --firefox=/usr/bin/floorp --firefox-profile=/home/david/.local/share/claude-model-presets-profile --profile-create-if-missing --keep-profile-changes --source-dir dist/firefox"
   },
   "devDependencies": {
     "web-ext": "^8.0.0"
