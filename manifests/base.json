@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "claude-model-presets",
+  "version": "0.1.0",
+  "description": "Unofficial: shortcuts that switch model and effort on claude.ai in one step.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://claude.ai/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["selectors.js", "i18n.js", "presets.js", "settings-ui.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
