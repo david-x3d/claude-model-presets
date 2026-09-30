@@ -59,10 +59,22 @@
     }
   }
 
-  async function openSubmenu(trigger, menu) {
+  const log = (...a) => console.debug('[claude-model-presets]', ...a);
+
+  // Submenus open on hover, click or ArrowRight depending on the input method; try each in turn.
+  async function openSubmenu(trigger, menu, hasItems) {
+    const sub = () => $$(S.menu).find((m) => m !== menu && hasItems(m));
+    trigger.focus?.({ preventScroll: true });
     hover(trigger);
-    press(trigger);
-    return waitFor(() => $$(S.menu).find((m) => m !== menu && m.querySelector('[role="menuitemradio"]')));
+    let m = await waitFor(sub, 700);
+    if (!m) { press(trigger); m = await waitFor(sub, 700); }
+    if (!m) {
+      const init = { key: 'ArrowRight', code: 'ArrowRight', keyCode: 39, bubbles: true, cancelable: true };
+      trigger.dispatchEvent(new KeyboardEvent('keydown', init));
+      m = await waitFor(sub, 1000);
+    }
+    log('submenu', m ? 'opened' : 'not opened');
+    return m;
   }
 
   async function selectModel(id) {
@@ -71,9 +83,9 @@
     let item = modelItem(id);
     if (!item) {
       const more = $$(S.submenuTrigger, menu).filter((el) => !globalThis.CMP.isEffortTrigger(el)).pop();
-      if (more) { await openSubmenu(more, menu); item = await waitFor(() => modelItem(id), 1500); }
+      if (more) { await openSubmenu(more, menu, (m) => m.querySelector(S.modelItem)); item = await waitFor(() => modelItem(id), 1500); }
     }
-    if (!item) { await closeMenus(); return false; }
+    if (!item) { log('model not found', id, 'more:', !!item); await closeMenus(); return false; }
     if (item.getAttribute('aria-checked') !== 'true') press(item);
     await waitFor(() => !modelMenu(), 1000);
     await closeMenus();
@@ -86,7 +98,7 @@
     if (!menu) return 'fail';
     const trigger = $$(S.submenuTrigger, menu).find(globalThis.CMP.isEffortTrigger);
     if (!trigger) { await closeMenus(); return 'none'; }
-    const sub = await openSubmenu(trigger, menu);
+    const sub = await openSubmenu(trigger, menu, (m) => m.querySelector(S.effortItem));
     const item = sub && $$(S.effortItem, sub).find((el) => globalThis.CMP.labelOf(el) === label);
     if (!item) { await closeMenus(); return sub ? 'none' : 'fail'; }
     if (item.getAttribute('aria-checked') !== 'true') press(item);
