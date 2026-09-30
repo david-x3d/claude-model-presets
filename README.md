@@ -32,6 +32,6 @@ npm run start:firefox  # run with web-ext
 - Effort levels per model are only known after you opened that model's Effort submenu once; before that the
   settings show all levels seen so far.
 - Effort is matched by its visible label, so presets store the label in the language you saw it in.
-- The section is added to the General settings tab, not as its own tab.
+- The settings are a dialog on claude.ai; the section is added to its General tab (detected via DOM, not URL).
 - Depends on claude.ai's current markup (see `[unverified]` marks in `src/selectors.js`).
 - No Anthropic CSS or bundles are included; the section reuses classes the page already loads.

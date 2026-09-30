@@ -1,7 +1,7 @@
-// Injects a "Model presets" section into claude.ai/settings (General tab), reusing the page's own
+// Injects a "Model presets" section into the settings dialog/page (General tab), reusing the page's own
 // classes so it follows the native look and theme. Markup mirrors rows pasted from that page.
 (() => {
-  const { S, t, presets, paths } = globalThis.CMP;
+  const { S, t, presets } = globalThis.CMP;
   const MARK = 'data-cmp-section';
 
   const SELECT_CLASS = 'h-control max-w-[13rem] rounded border-0 bg-transparent px-sm font-sans text-body text-primary outline-none hover:bg-fill-ghost-hover focus-visible:shadow-focus';
@@ -151,7 +151,7 @@
 
   // Container that holds the native sections; only on the General tab.
   function findHost() {
-    if (!paths.settings(location.pathname) || !document.querySelector(S.settingsActiveTab)) return null;
+    if (!document.querySelector(S.settingsActiveTab)) return null;
     const title = document.querySelector(S.settingsGroupTitle);
     return title?.closest('section')?.parentElement ?? null;
   }
@@ -159,7 +159,7 @@
   let queued = false;
   function ensure() {
     queued = false;
-    if (!paths.settings(location.pathname) || !findHost()) {
+    if (!findHost()) {
       document.querySelectorAll(`[${MARK}]`).forEach((n) => n.remove());
       return;
     }
