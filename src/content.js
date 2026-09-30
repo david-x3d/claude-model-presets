@@ -1,6 +1,7 @@
 // Chat side: keyboard shortcuts drive the existing model menu; menus are also read passively
 // to learn the model list. No network interception, only UI operation.
 (() => {
+  console.info('[claude-model-presets] content script loaded');
   const { S, t, presets } = globalThis.CMP;
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
