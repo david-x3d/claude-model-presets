@@ -69,7 +69,7 @@
     const { list, guessed } = slot.modelId ? effortChoices(slot.modelId, slot.effort) : { list: [], guessed: false };
     for (const l of list) select.append(option(l, l, l === slot.effort));
     select.disabled = !slot.modelId;
-    return guessed && list.length > 0;
+    return guessed ? (list.length ? 'guess' : 'none') : '';
   }
 
   function slotRow(i) {
@@ -88,7 +88,7 @@
     const refreshHints = () => {
       const guessed = fillEffort(effort, desc, slot);
       const m = slot.modelId && !catalog.models.some((x) => x.id === slot.modelId);
-      warn.textContent = m ? t('missingWarn') : guessed ? t('effortGuess') : '';
+      warn.textContent = m ? t('missingWarn') : guessed === 'guess' ? t('effortGuess') : guessed === 'none' ? t('effortNone') : '';
       warn.hidden = !warn.textContent;
       r.classList.toggle('opacity-50', !slot.active);
     };

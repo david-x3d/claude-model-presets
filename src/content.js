@@ -59,6 +59,11 @@
     }
   }
 
+  // Menus stay invisible while we operate them, so only the toast is seen.
+  const style = document.createElement('style');
+  style.textContent = 'html[data-cmp-busy] [role="menu"], html[data-cmp-busy] [data-cds-overlay] { opacity: 0 !important; pointer-events: none !important; transition: none !important; animation: none !important; }';
+  document.documentElement.append(style);
+
   const log = (...a) => console.debug('[claude-model-presets]', ...a);
 
   // Submenus open on hover, click or ArrowRight depending on the input method; try each in turn.
@@ -98,7 +103,7 @@
     if (!menu) return 'fail';
     const trigger = $$(S.submenuTrigger, menu).find(globalThis.CMP.isEffortTrigger);
     if (!trigger) { await closeMenus(); return 'none'; }
-    const sub = await openSubmenu(trigger, menu, (m) => m.querySelector(S.effortItem));
+    const sub = await openSubmenu(trigger, menu, (m) => $$(S.effortItem, m).length > 1 && !m.querySelector(S.modelItem));
     const item = sub && $$(S.effortItem, sub).find((el) => globalThis.CMP.labelOf(el) === label);
     if (!item) { await closeMenus(); return sub ? 'none' : 'fail'; }
     if (item.getAttribute('aria-checked') !== 'true') press(item);
@@ -135,7 +140,8 @@
     harvestTimer = setTimeout(async () => {
       const menus = $$(S.menu);
       const models = menus.flatMap((m) => $$(S.modelItem, m)).map((el) => ({ id: el.dataset.modelId, name: globalThis.CMP.labelOf(el) }));
-      const effortMenu = menus.find((m) => !m.querySelector(S.modelItem) && m.querySelector(S.effortItem));
+      const effortMenu = menus.find((m) => !m.querySelector(S.modelItem) && $$(S.effortItem, m).length > 1);
+      if (effortMenu) log('effort menu seen:', $$(S.effortItem, effortMenu).map((el) => el.getAttribute('role') + ':' + globalThis.CMP.labelOf(el)));
       const current = $$(S.modelItem).find((el) => el.getAttribute('aria-checked') === 'true')?.dataset.modelId;
       if (!models.length && !(effortMenu && current)) return;
 
@@ -202,6 +208,12 @@
     e.stopPropagation();
     if (busy) return;
     busy = true;
-    try { await run(slot); } finally { busy = false; }
+    document.documentElement.setAttribute('data-cmp-busy', '');
+    try { await run(slot); } finally {
+      await closeMenus();
+      document.documentElement.removeAttribute('data-cmp-busy');
+      document.querySelector(`${S.composer} [contenteditable="true"]`)?.focus?.();
+      busy = false;
+    }
   }, true);
 })();

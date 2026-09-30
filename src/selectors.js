@@ -12,7 +12,7 @@
     // [verified] model entries carry a stable model id
     modelItem: '[role="menuitemradio"][data-model-id]',
     // [unverified] effort submenu entries: radio items without a model id
-    effortItem: '[role="menuitemradio"]:not([data-model-id])',
+    effortItem: '[role^="menuitem"]:not([data-model-id]):not([aria-haspopup])',
     // [verified] "Effort" and "More models" are both role=menuitem + aria-haspopup=menu
     submenuTrigger: '[role="menuitem"][aria-haspopup="menu"]',
     dialog: '[role="dialog"],[role="alertdialog"]',

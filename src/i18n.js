@@ -20,6 +20,7 @@
     noCatalog: 'Noch keine Modelle bekannt. Öffne claude.ai/new und klicke einmal auf den Modellwähler.',
     effortGuess: 'Stufen für dieses Modell noch nicht gesehen: zeigt alle bekannten.',
     notFound: 'Nicht gefunden',
+    effortNone: 'Stufen noch nicht bekannt: Öffne im Modellwähler einmal „Aufwand“/„Effort“ für dieses Modell.',
   };
   const en = {
     title: 'Model presets',
@@ -39,6 +40,7 @@
     noCatalog: 'No models known yet. Open claude.ai/new and click the model selector once.',
     effortGuess: 'Levels for this model not seen yet: showing all known ones.',
     notFound: 'Not found',
+    effortNone: 'Levels not known yet: open "Effort" in the model selector once for this model.',
   };
 
   const strings = /^de/i.test(navigator.language) ? de : en;
