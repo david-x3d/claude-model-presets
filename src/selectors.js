@@ -41,6 +41,7 @@
   CMP.isEffortTrigger = (el) => {
     let spans = 0;
     for (const s of el.querySelectorAll('span')) {
+      if (s.matches('[data-cds="Icon"],[aria-hidden="true"]') || s.closest('[data-cds="Icon"],[aria-hidden="true"]')) continue; // icon glyphs are text too
       if ([...s.childNodes].some((n) => n.nodeType === 3 && n.nodeValue.trim())) spans++;
     }
     return spans >= 2;
