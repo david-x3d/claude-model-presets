@@ -45,6 +45,16 @@ Temporary add-ons are removed when the browser closes. For development use
 2. Click **Load unpacked** and select the `dist/chrome` folder.
 3. Reload claude.ai.
 
+### Signed Firefox build (permanent install)
+Release Firefox only keeps add-ons that Mozilla has signed. Self-distribution ("unlisted") signing is free:
+create API keys at <https://addons.mozilla.org/developers/addon/api/key/>, then
+
+```bash
+export WEB_EXT_API_KEY=user:xxxx WEB_EXT_API_SECRET=xxxx
+npm run sign:firefox      # writes web-ext-artifacts/*.xpi
+```
+Install the `.xpi` via `about:addons` → gear icon → *Install Add-on From File…*.
+
 ## First use
 1. On claude.ai/new open the model selector once, expand **More models**, and open the **Effort**
    submenu (per model). That is how the extension learns the model list and effort levels.
