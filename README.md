@@ -20,7 +20,9 @@ AltGr and would type characters.
 
 ## Install
 
-There is no store listing yet; install from source. Requires Node.js 18+.
+There is no store listing. For Firefox and its forks, download the signed `.xpi` from the [latest release](https://github.com/david-x3d/claude-model-presets/releases/latest), open `about:addons` → gear icon → **Install Add-on From File…**, and allow access to `claude.ai` under **Permissions**. This install stays after restarting the browser and does not require Node.js.
+
+For Chromium browsers or development, build from source with Node.js 18+:
 
 ```bash
 git clone https://github.com/david-x3d/claude-model-presets.git
@@ -45,7 +47,7 @@ Temporary add-ons are removed when the browser closes. For development use
 2. Click **Load unpacked** and select the `dist/chrome` folder.
 3. Reload claude.ai.
 
-### Signed Firefox build (permanent install)
+### Signing your own Firefox build (maintainers)
 Release Firefox only keeps add-ons that Mozilla has signed. Self-distribution ("unlisted") signing is free:
 create API keys at <https://addons.mozilla.org/developers/addon/api/key/>, then
 
